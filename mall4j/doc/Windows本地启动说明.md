@@ -159,6 +159,10 @@ Invoke-RestMethod -Method Get -Uri "http://localhost:18085/sys/menu/nav" -Header
 
 如果第二步返回 `code=00000`，说明“取 Token + 访问受保护后台接口”链路正常。
 
+优惠券后端联调与最小闭环验证请看：
+
+- [优惠券后端联调与最小闭环测试.md](/F:/work/project/shop_java/mall4j/doc/优惠券后端联调与最小闭环测试.md)
+
 ## 9. 常见问题
 
 ### 9.1 MySQL 或 Redis 不可达

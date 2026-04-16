@@ -3882,6 +3882,36 @@ CREATE TABLE `tz_category_prop` (
 
 /*Data for the table `tz_category_prop` */
 
+/*Table structure for table `tz_coupon` */
+
+DROP TABLE IF EXISTS `tz_coupon`;
+
+CREATE TABLE `tz_coupon` (
+  `coupon_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '优惠券ID',
+  `coupon_no` varchar(64) NOT NULL COMMENT '优惠券唯一标识',
+  `coupon_name` varchar(128) NOT NULL COMMENT '优惠券名称',
+  `reduce_amount` decimal(15,2) NOT NULL COMMENT '优惠金额',
+  `condition_amount` decimal(15,2) NOT NULL COMMENT '使用门槛金额',
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态 0待发放 1未使用 2已使用 3已过期',
+  `source_type` tinyint(2) NOT NULL COMMENT '来源 1后台发放 2用户领取',
+  `receive_mode` tinyint(2) NOT NULL COMMENT '领取方式 1后台指定用户发放 2前台公开领取',
+  `user_id` varchar(36) DEFAULT NULL COMMENT '所属用户ID',
+  `order_number` varchar(50) DEFAULT NULL COMMENT '使用该券的订单号',
+  `start_time` datetime NOT NULL COMMENT '生效时间',
+  `end_time` datetime NOT NULL COMMENT '失效时间',
+  `receive_time` datetime DEFAULT NULL COMMENT '发放/领取时间',
+  `use_time` datetime DEFAULT NULL COMMENT '使用时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`coupon_id`),
+  UNIQUE KEY `uk_coupon_no` (`coupon_no`),
+  KEY `idx_user_status` (`user_id`,`status`),
+  KEY `idx_end_time` (`status`,`end_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='优惠券';
+
+/*Data for the table `tz_coupon` */
+
 /*Table structure for table `tz_delivery` */
 
 DROP TABLE IF EXISTS `tz_delivery`;

@@ -111,6 +111,30 @@ $nav = Invoke-RestMethod -Method Get -Uri "http://localhost:18085/sys/menu/nav" 
 if ($nav.code -ne "00000") { throw "nav check failed: $($nav.msg)" }
 ```
 
+## 6.1 在优惠券联调中的用法
+
+优惠券场景里，这个 dev token 只用于管理员接口（`/admin/coupon/**`），例如：
+
+- 创建优惠券
+- 按用户发券
+- 优惠券分页/详情
+
+示例：
+
+```powershell
+$tokenResp = Invoke-RestMethod -Method Post -Uri "http://localhost:18085/dev/auth/admin-token"
+$token = $tokenResp.data.accessToken
+
+Invoke-RestMethod -Method Get `
+  -Uri "http://localhost:18085/admin/coupon/page?pageNum=1&pageSize=10" `
+  -Headers @{ Authorization = $token }
+```
+
+注意：
+
+- 用户侧接口（`/p/**`）必须使用普通用户 Token，不能使用管理员 dev token。
+- 优惠券全链路联调步骤见 [优惠券后端联调与最小闭环测试.md](/F:/work/project/shop_java/mall4j/doc/优惠券后端联调与最小闭环测试.md)。
+
 ## 7. 失败排查
 
 - 返回 `404`（调用 `/dev/auth/admin-token`）

@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 确认订单时的事件
@@ -42,4 +43,9 @@ public class ConfirmOrderEvent {
      * 店铺中的所有商品项
      */
     private List<ShopCartItemDto> shopCartItems;
+
+    /**
+     * 本次确认单内已应用的优惠券ID
+     */
+    private Set<Long> appliedCouponIds;
 }

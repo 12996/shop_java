@@ -44,7 +44,7 @@
         </el-form>
       </div>
       <div class="bottom">
-        Copyright © 2019 广州市蓝海创新科技有限公司
+        online-shop
       </div>
     </div>
     <Verify

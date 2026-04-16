@@ -1,8 +1,6 @@
-//index.js
-//获取应用实例
-var http = require("../../utils/http.js");
-var config = require("../../utils/config.js");
-const app = getApp()
+var http = require('../../utils/http.js');
+var config = require('../../utils/config.js');
+const app = getApp();
 
 Page({
   data: {
@@ -17,131 +15,121 @@ Page({
     news: [],
     taglist: [],
     sts: 0,
+    scrollTop: 0
   },
-  //事件处理函数
+
   bindViewTap: function() {
     wx.navigateTo({
       url: '../logs/logs'
-    })
+    });
   },
+
   onLoad: function() {
     this.getAllData();
   },
 
-  // 页面滚动到指定位置指定元素固定在顶部
-  onPageScroll: function(e) { //监听页面滚动
+  onPageScroll: function(e) {
     this.setData({
       scrollTop: e.scrollTop
-    })
+    });
   },
 
   toProdPage: function(e) {
     var prodid = e.currentTarget.dataset.prodid;
     if (prodid) {
       wx.navigateTo({
-        url: '/pages/prod/prod?prodid=' + prodid,
-      })
+        url: '/pages/prod/prod?prodid=' + prodid
+      });
     }
   },
 
   toCouponCenter: function() {
-    wx.showToast({
-      icon:"none",
-      title: '该功能未开源'
-    })
+    wx.navigateTo({
+      url: '/pages/coupon-center/coupon-center'
+    });
   },
 
-  // 跳转搜索页
   toSearchPage: function() {
     wx.navigateTo({
-      url: '/pages/search-page/search-page',
-    })
+      url: '/pages/search-page/search-page'
+    });
   },
 
-  //跳转商品活动页面
   toClassifyPage: function(e) {
     var url = '/pages/prod-classify/prod-classify?sts=' + e.currentTarget.dataset.sts;
     var id = e.currentTarget.dataset.id;
     var title = e.currentTarget.dataset.title;
     if (id) {
-      url += "&tagid=" + id + "&title=" + title;
+      url += '&tagid=' + id + '&title=' + title;
     }
     wx.navigateTo({
       url: url
-    })
+    });
   },
 
-  //跳转限时特惠页面
-  toLimitedTimeOffer: function(e) {
+  toLimitedTimeOffer: function() {
     wx.showToast({
-      icon:"none",
-      title: '该功能未开源'
-    })
+      icon: 'none',
+      title: '该功能未开放'
+    });
   },
 
-  //跳转公告列表页面
   onNewsPage: function() {
     wx.navigateTo({
-      url: '/pages/recent-news/recent-news',
-    })
+      url: '/pages/recent-news/recent-news'
+    });
   },
 
-  onShow: function() {
-  },
-  getAllData() {
-    http.getCartCount(); //重新计算购物车总数量
+  onShow: function() {},
+
+  getAllData: function() {
+    http.getCartCount();
     this.getIndexImgs();
     this.getNoticeList();
     this.getTag();
   },
-  //加载轮播图
-  getIndexImgs() {
-    //加载轮播图
-    var params = {
-      url: "/indexImgs",
-      method: "GET",
+
+  getIndexImgs: function() {
+    http.request({
+      url: '/indexImgs',
+      method: 'GET',
       data: {},
-      callBack: (res) => {
+      callBack: res => {
         this.setData({
           indexImgs: res,
           seq: res
         });
       }
-    };
-    http.request(params);
-  },
-  getNoticeList() {
-    // 加载公告
-    var params = {
-      url: "/shop/notice/topNoticeList",
-      method: "GET",
-      data: {},
-      callBack: (res) => {
-        this.setData({
-          news: res,
-        });
-      }
-    };
-    http.request(params);
+    });
   },
 
-  /**
-   * 加入购物车
-   */
-   addToCart(e) {
-    const prodId = e.currentTarget.dataset.prodid
-    const ths = this
+  getNoticeList: function() {
+    http.request({
+      url: '/shop/notice/topNoticeList',
+      method: 'GET',
+      data: {},
+      callBack: res => {
+        this.setData({
+          news: res
+        });
+      }
+    });
+  },
+
+  addToCart: function(e) {
+    const prodId = e.currentTarget.dataset.prodid;
+    const ths = this;
     wx.showLoading();
-    var params = {
-      url: "/prod/prodInfo",
-      method: "GET",
+    http.request({
+      url: '/prod/prodInfo',
+      method: 'GET',
       data: {
-        prodId
+        prodId: prodId
       },
-      callBack: (res) => {
-        var params = {
-          url: "/p/shopCart/changeItem",
-          method: "POST",
+      callBack: res => {
+        http.request({
+          url: '/p/shopCart/changeItem',
+          method: 'POST',
           data: {
             basketId: 0,
             count: 1,
@@ -149,112 +137,81 @@ Page({
             shopId: res.shopId,
             skuId: res.skuList[0].skuId
           },
-          callBack: function(res) {
+          callBack: function() {
             ths.setData({
-              totalCartNum: ths.data.totalCartNum + ths.data.prodNum
+              totalCartNum: (ths.data.totalCartNum || 0) + (ths.data.prodNum || 1)
             });
             wx.hideLoading();
-            http.getCartCount(); //重新计算购物车总数量
+            http.getCartCount();
             wx.showToast({
-              title: "加入购物车成功",
-              icon: "none"
-            })
+              title: '加入购物车成功',
+              icon: 'none'
+            });
+          },
+          errCallBack: function() {
+            wx.hideLoading();
           }
-        };
-        http.request(params);
+        });
+      },
+      errCallBack: function() {
+        wx.hideLoading();
       }
-    };
-    http.request(params);
+    });
   },
 
-
-  // 加载商品标题分组列表
-  getTag() {
-    var params = {
-      url: "/prod/tag/prodTagList",
-      method: "GET",
+  getTag: function() {
+    http.request({
+      url: '/prod/tag/prodTagList',
+      method: 'GET',
       data: {},
-      callBack: (res) => {
+      callBack: res => {
         this.setData({
-          taglist: res,
+          taglist: res
         });
         for (var i = 0; i < res.length; i++) {
           this.getTagProd(res[i].id, i);
         }
       }
-    };
-    http.request(params);
+    });
   },
 
-  getTagProd(id, index) {
-    var param = {
-      url: "/prod/prodListByTagId",
-      method: "GET",
+  getTagProd: function(id, index) {
+    http.request({
+      url: '/prod/prodListByTagId',
+      method: 'GET',
       data: {
         tagId: id,
         size: 6
       },
-      callBack: (res) => {
+      callBack: res => {
         var taglist = this.data.taglist;
-        taglist[index].prods = (res.records || []).filter(prod => !this.shouldHideHomeProd(prod))
-
+        taglist[index].prods = (res.records || []).filter(prod => !this.shouldHideHomeProd(prod));
         this.setData({
-          taglist: taglist,
+          taglist: taglist
         });
       }
-    };
-    http.request(param);
+    });
   },
 
-  // Temporary frontend guard: hide unexpected demo product on home sections.
-  shouldHideHomeProd(prod) {
-    const name = ((prod && prod.prodName) || '').replace(/\s+/g, '')
-    return /\u65fa\u4ed4\u725b\u5976/.test(name)
+  shouldHideHomeProd: function(prod) {
+    var name = ((prod && prod.prodName) || '').replace(/\s+/g, '');
+    return /\u65fa\u4ed4\u725b\u5976/.test(name);
   },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  // onPullDownRefresh: function () {
-  //     wx.request({
-  //       url: '',
-  //       data: {},
-  //       method: 'GET',
-  //       success: function (res) { },
-  //       fail: function (res) { },
-  //       complete: function (res) {
-  //         wx.stopPullDownRefresh();
-  //       }
-  //     })
-  // },
 
   onPullDownRefresh: function() {
-
-    // wx.showNavigationBarLoading() //在标题栏中显示加载
-
-    //模拟加载
     var ths = this;
     setTimeout(function() {
-
       ths.getAllData();
-
-      // wx.hideNavigationBarLoading() //完成停止加载
-
-      wx.stopPullDownRefresh() //停止下拉刷新
-
+      wx.stopPullDownRefresh();
     }, 100);
-
   },
 
-  /**
-   * 跳转至商品详情
-   */
   showProdInfo: function(e) {
-    let relation = e.currentTarget.dataset.relation;
+    var relation = e.currentTarget.dataset.relation;
     if (relation) {
       wx.navigateTo({
-        url: 'pages/prod/prod',
-      })
+        url: 'pages/prod/prod'
+      });
     }
   }
-})
+});

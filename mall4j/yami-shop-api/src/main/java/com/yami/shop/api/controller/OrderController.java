@@ -35,8 +35,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author lanhai
@@ -95,6 +97,7 @@ public class OrderController {
         double total = 0.0;
         int totalCount = 0;
         double orderReduce = 0.0;
+        Set<Long> appliedCouponIds = new HashSet<>();
         for (ShopCartDto shopCart : shopCarts) {
 
             // 每个店铺的订单信息
@@ -114,7 +117,7 @@ public class OrderController {
 
             shopCartOrder.setShopCartItemDiscounts(shopCartItemDiscounts);
 
-            applicationContext.publishEvent(new ConfirmOrderEvent(shopCartOrder,orderParam,shopAllShopCartItems));
+            applicationContext.publishEvent(new ConfirmOrderEvent(shopCartOrder, orderParam, shopAllShopCartItems, appliedCouponIds));
 
             actualTotal = Arith.add(actualTotal,shopCartOrder.getActualTotal());
             total = Arith.add(total,shopCartOrder.getTotal());

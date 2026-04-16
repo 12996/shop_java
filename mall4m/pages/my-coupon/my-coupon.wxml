@@ -1,0 +1,13 @@
+<view class="container my-coupon-page">
+  <view class="tabs">
+    <view class="tab {{sts===1 ? 'on' : ''}}" data-sts="1" bindtap="changeSts">未使用</view>
+    <view class="tab {{sts===2 ? 'on' : ''}}" data-sts="2" bindtap="changeSts">已使用</view>
+    <view class="tab {{sts===3 ? 'on' : ''}}" data-sts="3" bindtap="changeSts">已过期</view>
+  </view>
+  <view class="coupon-list" wx:if="{{list.length}}">
+    <block wx:for="{{list}}" wx:key="couponId">
+      <coupon item="{{item}}" canUse="{{sts===1}}" type="{{item.couponTypeTag}}"></coupon>
+    </block>
+  </view>
+  <view class="empty" wx:else>暂无优惠券</view>
+</view>

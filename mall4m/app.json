@@ -15,6 +15,8 @@
         "pages/pay-result/pay-result",
         "pages/search-prod-show/search-prod-show",
         "pages/prod/prod",
+        "pages/coupon-center/coupon-center",
+        "pages/my-coupon/my-coupon",
         "pages/login/login",
         "pages/prod-classify/prod-classify",
         "pages/recent-news/recent-news",

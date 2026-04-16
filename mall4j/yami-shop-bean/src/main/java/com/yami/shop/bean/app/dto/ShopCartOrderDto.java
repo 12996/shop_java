@@ -1,11 +1,5 @@
 /*
  * Copyright (c) 2018-2999 广州市蓝海创新科技有限公司 All rights reserved.
- *
- * 
- *
- * 未经允许，不可做商业用途！
- *
- * 版权所有，侵权必究！
  */
 
 package com.yami.shop.bean.app.dto;
@@ -17,48 +11,52 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 单个店铺的订单信息
+ * Single shop order in confirm/submit flow.
+ *
  * @author lanhai
  */
 @Data
-public class ShopCartOrderDto implements Serializable{
+public class ShopCartOrderDto implements Serializable {
 
-    @Schema(description = "店铺id" ,requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Shop id", requiredMode = Schema.RequiredMode.REQUIRED)
     private Long shopId;
 
-    @Schema(description = "店铺名称" ,requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Shop name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String shopName;
 
-    @Schema(description = "实际总值" ,requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Actual total amount", requiredMode = Schema.RequiredMode.REQUIRED)
     private Double actualTotal;
 
-    @Schema(description = "商品总值" ,requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Product total amount", requiredMode = Schema.RequiredMode.REQUIRED)
     private Double total;
 
-    @Schema(description = "商品总数" ,requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Total product count", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer totalCount;
 
-    @Schema(description = "运费" ,requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Freight amount", requiredMode = Schema.RequiredMode.REQUIRED)
     private Double transfee;
 
-    @Schema(description = "促销活动优惠金额" ,requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Promotion discount amount", requiredMode = Schema.RequiredMode.REQUIRED)
     private Double discountReduce;
 
-    @Schema(description = "优惠券优惠金额" ,requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Coupon discount amount", requiredMode = Schema.RequiredMode.REQUIRED)
     private Double couponReduce;
 
-    @Schema(description = "店铺优惠金额(促销活动 + 优惠券 + 其他)" ,requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Shop reduce amount", requiredMode = Schema.RequiredMode.REQUIRED)
     private Double shopReduce = 0.0;
 
-    @Schema(description = "订单备注信息" ,requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Order remarks", requiredMode = Schema.RequiredMode.REQUIRED)
     private String remarks;
 
-    @Schema(description = "购物车商品" ,requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Cart items by discount group", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ShopCartItemDiscountDto> shopCartItemDiscounts;
 
-    @Schema(description = "整个店铺可以使用的优惠券列表" ,requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Coupon list for this shop order", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<CouponOrderDto> coupons;
 
-    @Schema(description = "订单编号" ,requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Selected coupon id for submit stage")
+    private Long selectedCouponId;
+
+    @Schema(description = "Order number", requiredMode = Schema.RequiredMode.REQUIRED)
     private String orderNumber;
 }

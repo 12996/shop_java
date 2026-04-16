@@ -1,0 +1,35 @@
+.my-coupon-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.tabs {
+  display: flex;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  line-height: 88rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.tab.on {
+  color: #eb2444;
+  font-weight: 600;
+}
+
+.coupon-list {
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+
+.empty {
+  padding: 180rpx 0;
+  text-align: center;
+  color: #999;
+  font-size: 28rpx;
+}

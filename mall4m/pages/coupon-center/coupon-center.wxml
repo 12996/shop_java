@@ -1,0 +1,8 @@
+<view class="container coupon-page">
+  <view class="coupon-list" wx:if="{{list.length}}">
+    <block wx:for="{{list}}" wx:key="couponId">
+      <coupon item="{{item}}" canUse="{{true}}" bind:receiveCoupon="onReceiveCoupon"></coupon>
+    </block>
+  </view>
+  <view class="empty" wx:else>暂无可领取优惠券</view>
+</view>

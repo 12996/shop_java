@@ -20,7 +20,11 @@ export const tableOption = {
     value: 'value'
   },
   column: [{
-    label: '用户昵称',
+    label: '用户ID',
+    prop: 'userId',
+    minWidth: 220
+  }, {
+    label: '用户名称',
     prop: 'nickName',
     search: true
   }, {

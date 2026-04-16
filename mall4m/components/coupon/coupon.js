@@ -1,8 +1,6 @@
 var http = require('../../utils/http.js');
+
 Component({
-  /**
-   * 组件的属性列表
-   */
   properties: {
     item: Object,
     type: Number,
@@ -12,56 +10,54 @@ Component({
     showTimeType: Number
   },
 
-  /**
-   * 组件的初始数据
-   */
-  data: {
-    stsType: 4
-
-  },
-  // 生命周期函数，可以为函数，或一个在methods段中定义的方法名
-  attached: function() {
-    //console.log(this.data.item);
-  },
-  /**
-   * 组件的方法列表
-   */
   methods: {
-    receiveCoupon() {
-      var couponId = this.data.item.couponId;
+    receiveCoupon: function() {
+      var couponNo = this.data.item && this.data.item.couponNo;
+      if (!couponNo) {
+        wx.showToast({
+          title: '优惠券编码缺失',
+          icon: 'none'
+        });
+        return;
+      }
+
       http.request({
-        url: "/p/myCoupon/receive",
-        method: "POST",
-        data: couponId,
+        url: '/p/coupon/receive/' + couponNo,
+        method: 'POST',
+        data: {},
         callBack: () => {
-          var coupon = this.data.item;
-          coupon.canReceive = false;
           this.setData({
-            item: coupon
-          })
+            item: Object.assign({}, this.data.item, {
+              canReceive: false
+            })
+          });
+          this.triggerEvent('receiveCoupon', {
+            couponNo: couponNo
+          });
+          wx.showToast({
+            title: '领取成功',
+            icon: 'none'
+          });
+        },
+        errCallBack: res => {
+          wx.showToast({
+            title: (res && res.msg) || '领取失败',
+            icon: 'none'
+          });
         }
-      })
+      });
     },
-    checkCoupon(e) {
-      // this.triggerEvent('checkCoupon', this.data.index);
+
+    checkCoupon: function(e) {
       this.triggerEvent('checkCoupon', {
         couponId: e.currentTarget.dataset.couponid
       });
     },
-    /**
-     * 立即使用
-     */
-    useCoupon() {
-      var url = '/pages/prod-classify/prod-classify?sts=' + this.data.stsType;
-      var id = this.data.item.couponId;
-      var title = "优惠券活动商品";
-      if (id) {
-        url += "&tagid=" + id + "&title=" + title;
-      }
-      wx.navigateTo({
-        url: url
-      })
 
+    useCoupon: function() {
+      wx.navigateTo({
+        url: '/pages/submit-order/submit-order?orderEntry=0'
+      });
     }
   }
-})
+});

@@ -58,9 +58,6 @@
         >
           导出销售记录
         </el-button>
-        <el-button @click="clearDatas()">
-          清空
-        </el-button>
       </el-form-item>
     </el-form>
     <div class="main">
