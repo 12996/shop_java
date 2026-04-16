@@ -196,7 +196,7 @@ Page({
       },
       callBack: (res) => {
         var taglist = this.data.taglist;
-        taglist[index].prods = res.records
+        taglist[index].prods = (res.records || []).filter(prod => !this.shouldHideHomeProd(prod))
 
         this.setData({
           taglist: taglist,
@@ -204,6 +204,12 @@ Page({
       }
     };
     http.request(param);
+  },
+
+  // Temporary frontend guard: hide unexpected demo product on home sections.
+  shouldHideHomeProd(prod) {
+    const name = ((prod && prod.prodName) || '').replace(/\s+/g, '')
+    return /\u65fa\u4ed4\u725b\u5976/.test(name)
   },
 
   /**

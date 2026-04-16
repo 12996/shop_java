@@ -1,6 +1,6 @@
 <!--pages/login/login.wxml-->
 <image src='http://img-test.gz-yami.com/mini/logo.jpg' class='c-logo'></image>
-<view class="title">mall4j</view>
+<view class="title">online-shop</view>
 <view class="login-form">
     <view class="item">
         <view class="account">

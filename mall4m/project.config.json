@@ -35,12 +35,18 @@
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
-    }
+    },
+    "compileWorklet": false,
+    "localPlugins": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true
   },
   "compileType": "miniprogram",
   "libVersion": "2.23.2",
-  "appid": "wx6fa71e69231a4fa4",
-  "projectname": "mall4j",
+  "appid": "wx8e316a4339754fe1",
+  "projectname": "online-shop",
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "condition": {},

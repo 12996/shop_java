@@ -1,11 +1,6 @@
 var http = require('../../utils/http.js');
-var config = require('../../utils/config.js');
 
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
     list: [],
     current: 1,
@@ -13,43 +8,35 @@ Page({
     sts: 0
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function(options) {
     if (options.sts) {
       this.setData({
         sts: options.sts
       });
       this.loadOrderData(options.sts, 1);
-    } else {
-      this.loadOrderData(0, 1);
+      return;
     }
+    this.loadOrderData(0, 1);
   },
 
-  /**
-   * 加载订单数据
-   */
   loadOrderData: function(sts, current) {
     var ths = this;
     wx.showLoading();
-    //加载订单列表
-    var params = {
-      url: "/p/myOrder/myOrder",
-      method: "GET",
+    http.request({
+      url: '/p/myOrder/myOrder',
+      method: 'GET',
       data: {
         current: current,
         size: 10,
-        status: sts,
+        status: sts
       },
       callBack: function(res) {
-        //console.log(res);
         var list = [];
-        if (res.current == 1) {
-          list = res.records;
+        if (res.current === 1) {
+          list = res.records || [];
         } else {
-          list = ths.data.list;
-          Array.prototype.push.apply(list, res.records);
+          list = ths.data.list.slice();
+          Array.prototype.push.apply(list, res.records || []);
         }
         ths.setData({
           list: list,
@@ -57,14 +44,13 @@ Page({
           current: res.current
         });
         wx.hideLoading();
+      },
+      errCallBack: function() {
+        wx.hideLoading();
       }
-    };
-    http.request(params);
+    });
   },
 
-  /**
-   * 状态点击事件
-   */
   onStsTap: function(e) {
     var sts = e.currentTarget.dataset.sts;
     this.setData({
@@ -73,210 +59,254 @@ Page({
     this.loadOrderData(sts, 1);
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function() {
+  onReady: function() {},
+  onShow: function() {},
+  onHide: function() {},
+  onUnload: function() {},
+  onPullDownRefresh: function() {},
 
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
   onReachBottom: function() {
     if (this.data.current < this.data.pages) {
       this.loadOrderData(this.data.sts, this.data.current + 1);
     }
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function() {
+  onShareAppMessage: function() {},
 
-  },
-
-
-  /**
-   * 查看物流
-   */
   toDeliveryPage: function(e) {
     wx.navigateTo({
       url: '/pages/express-delivery/express-delivery?orderNum=' + e.currentTarget.dataset.ordernum
-    })
+    });
   },
 
-  /**
-   * 取消订单
-   */
   onCancelOrder: function(e) {
     var ordernum = e.currentTarget.dataset.ordernum;
     var ths = this;
     wx.showModal({
       title: '',
       content: '要取消此订单？',
-      confirmColor: "#3e62ad",
-      cancelColor: "#3e62ad",
+      confirmColor: '#3e62ad',
+      cancelColor: '#3e62ad',
       cancelText: '否',
       confirmText: '是',
-      success(res) {
-        if (res.confirm) {
-          wx.showLoading({
-            mask: true
-          });
-
-          var params = {
-            url: "/p/myOrder/cancel/" + ordernum,
-            method: "PUT",
-            data: {},
-            callBack: function(res) {
-              //console.log(res);
-              ths.loadOrderData(ths.data.sts, 1);
-              wx.hideLoading();
-            }
-          };
-          http.request(params);
-        } else if (res.cancel) {
-          //console.log('用户点击取消')
+      success: function(res) {
+        if (!res.confirm) {
+          return;
         }
+        wx.showLoading({
+          mask: true
+        });
+        http.request({
+          url: '/p/myOrder/cancel/' + ordernum,
+          method: 'PUT',
+          data: {},
+          callBack: function() {
+            ths.loadOrderData(ths.data.sts, 1);
+            wx.hideLoading();
+          },
+          errCallBack: function() {
+            wx.hideLoading();
+          }
+        });
       }
-    })
-
+    });
   },
 
-  /**
-   * 付款
-   */
   onPayAgain: function(e) {
     wx.showLoading({
       mask: true
     });
-    var params = {
-      url: "/p/order/pay",
-      method: "POST",
+    http.request({
+      url: '/p/order/normalPay',
+      method: 'POST',
       data: {
-        payType: 1,
         orderNumbers: e.currentTarget.dataset.ordernum
       },
       callBack: res => {
-        //console.log(res);
         wx.hideLoading();
-        wx.requestPayment({
-          timeStamp: res.timeStamp,
-          nonceStr: res.nonceStr,
-          package: res.packageValue,
-          signType: res.signType,
-          paySign: res.paySign,
-          success: function() {
-            wx.navigateTo({
-              url: '/pages/pay-result/pay-result?sts=1&orderNumbers=' + e.currentTarget.dataset.ordernum,
-            })
-          },
-          fail: function(err) {
-            //console.log("支付失败");
-          }
-        })
-
+        if (!res) {
+          wx.showToast({
+            title: '支付失败',
+            icon: 'none'
+          });
+          return;
+        }
+        wx.showToast({
+          title: '模拟支付成功',
+          icon: 'none'
+        });
+        setTimeout(function() {
+          wx.navigateTo({
+            url: '/pages/pay-result/pay-result?sts=1&orderNumbers=' + e.currentTarget.dataset.ordernum
+          });
+        }, 1200);
+      },
+      errCallBack: res => {
+        wx.hideLoading();
+        wx.showToast({
+          title: (res && res.msg) || '支付失败',
+          icon: 'none'
+        });
       }
-    };
-    http.request(params);
+    });
   },
 
+  onBuyAgain: function(e) {
+    var orderIndex = e.currentTarget.dataset.index;
+    var order = this.data.list[orderIndex];
+    if (!order || !order.orderNumber) {
+      wx.showToast({
+        title: '订单商品不存在',
+        icon: 'none'
+      });
+      return;
+    }
 
-  /**
-   * 查看订单详情
-   */
+    wx.showLoading({
+      mask: true
+    });
+
+    http.request({
+      url: '/p/myOrder/orderDetail',
+      method: 'GET',
+      data: {
+        orderNumber: order.orderNumber
+      },
+      callBack: detail => {
+        var items = (detail && detail.orderItemDtos) || [];
+        var shopId = detail && detail.shopId;
+
+        if (!items.length || !shopId) {
+          wx.hideLoading();
+          wx.showToast({
+            title: '订单详情不完整',
+            icon: 'none'
+          });
+          return;
+        }
+
+        this.addOrderItemsToCart(items, shopId, 0);
+      },
+      errCallBack: res => {
+        wx.hideLoading();
+        wx.showToast({
+          title: (res && res.msg) || '订单详情加载失败',
+          icon: 'none'
+        });
+      }
+    });
+  },
+
+  addOrderItemsToCart: function(items, shopId, index) {
+    var ths = this;
+
+    if (index >= items.length) {
+      wx.hideLoading();
+      wx.showToast({
+        title: '已加入购物车',
+        icon: 'none'
+      });
+      setTimeout(function() {
+        wx.switchTab({
+          url: '/pages/basket/basket'
+        });
+      }, 800);
+      return;
+    }
+
+    var item = items[index];
+    if (!item || !item.prodId || !item.skuId || !item.prodCount) {
+      wx.hideLoading();
+      wx.showToast({
+        title: '订单商品数据异常',
+        icon: 'none'
+      });
+      return;
+    }
+
+    http.request({
+      url: '/p/shopCart/changeItem',
+      method: 'POST',
+      data: {
+        basketId: 0,
+        count: item.prodCount,
+        prodId: item.prodId,
+        shopId: shopId,
+        skuId: item.skuId
+      },
+      callBack: function() {
+        ths.addOrderItemsToCart(items, shopId, index + 1);
+      },
+      errCallBack: function(res) {
+        wx.hideLoading();
+        wx.showToast({
+          title: (res && res.msg) || '加入购物车失败',
+          icon: 'none'
+        });
+      }
+    });
+  },
+
   toOrderDetailPage: function(e) {
     wx.navigateTo({
-      url: '/pages/order-detail/order-detail?orderNum=' + e.currentTarget.dataset.ordernum,
-    })
+      url: '/pages/order-detail/order-detail?orderNum=' + e.currentTarget.dataset.ordernum
+    });
   },
 
-  /**
-   * 确认收货
-   */
   onConfirmReceive: function(e) {
     var ths = this;
     wx.showModal({
       title: '',
       content: '我已收到货？',
-      confirmColor: "#eb2444",
-      success(res) {
-        if (res.confirm) {
-          wx.showLoading({
-            mask: true
-          });
-
-          var params = {
-            url: "/p/myOrder/receipt/" + e.currentTarget.dataset.ordernum,
-            method: "PUT",
-            data: {},
-            callBack: function(res) {
-              //console.log(res);
-              ths.loadOrderData(ths.data.sts, 1);
-              wx.hideLoading();
-            }
-          };
-          http.request(params);
-        } else if (res.cancel) {
-          //console.log('用户点击取消')
+      confirmColor: '#eb2444',
+      success: function(res) {
+        if (!res.confirm) {
+          return;
         }
+        wx.showLoading({
+          mask: true
+        });
+        http.request({
+          url: '/p/myOrder/receipt/' + e.currentTarget.dataset.ordernum,
+          method: 'PUT',
+          data: {},
+          callBack: function() {
+            ths.loadOrderData(ths.data.sts, 1);
+            wx.hideLoading();
+          },
+          errCallBack: function() {
+            wx.hideLoading();
+          }
+        });
       }
-    })
+    });
   },
-//删除已完成||已取消的订单
+
   delOrderList: function(e) {
-    var ths = this
+    var ths = this;
     wx.showModal({
       title: '',
       content: '确定要删除此订单吗？',
-      confirmColor: "#eb2444",
-      success(res) {
-        if (res.confirm) {
-          var ordernum = e.currentTarget.dataset.ordernum;
-          wx.showLoading();
-          var params = {
-            url: "/p/myOrder/" + ordernum,
-            method: "DELETE",
-            data: {},
-            callBack: function(res) {
-              ths.loadOrderData(ths.data.sts, 1);
-              wx.hideLoading();
-            }
-          }
-          http.request(params);
-        } else if (res.cancel) {
-          console.log('用户点击取消')
+      confirmColor: '#eb2444',
+      success: function(res) {
+        if (!res.confirm) {
+          return;
         }
+        var ordernum = e.currentTarget.dataset.ordernum;
+        wx.showLoading();
+        http.request({
+          url: '/p/myOrder/' + ordernum,
+          method: 'DELETE',
+          data: {},
+          callBack: function() {
+            ths.loadOrderData(ths.data.sts, 1);
+            wx.hideLoading();
+          },
+          errCallBack: function() {
+            wx.hideLoading();
+          }
+        });
       }
-    })
+    });
   }
-})
+});

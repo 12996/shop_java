@@ -1,114 +1,76 @@
 // pages/pay-result/pay-result.js
-Page({
+var http = require("../../utils/http.js");
 
-  /**
-   * 页面的初始数据
-   */
+Page({
   data: {
     sts: 0,
-    orderNumbers: ''
+    orderNumbers: ""
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
+  onLoad: function(options) {
     this.setData({
       sts: options.sts,
       orderNumbers: options.orderNumbers
     });
   },
-  toOrderList: function () {
+
+  toOrderList: function() {
     wx.navigateTo({
-      url: '/pages/orderList/orderList?sts=0'
-    })
+      url: "/pages/orderList/orderList?sts=0"
+    });
   },
-  toIndex: function () {
+
+  toIndex: function() {
     wx.switchTab({
-      url: '/pages/index/index'
-    })
+      url: "/pages/index/index"
+    });
   },
-  payAgain: function () {
+
+  payAgain: function() {
     wx.showLoading({
       mask: true
     });
     var params = {
-      url: "/p/order/pay",
+      url: "/p/order/normalPay",
       method: "POST",
       data: {
-        payType: 1,
         orderNumbers: this.data.orderNumbers
       },
-      callBack: function (res) {
-        //console.log(res);
+      callBack: res => {
         wx.hideLoading();
-        wx.requestPayment({
-          timeStamp: res.timeStamp,
-          nonceStr: res.nonceStr,
-          package: res.packageValue,
-          signType: res.signType,
-          paySign: res.paySign,
-          success: e => {
-            //console.log("支付成功");
-            wx.redirectTo({
-              url: '/pages/pay-result/pay-result?sts=1&orderNum=' + orderNumbers + "&orderType=" + this.data.orderType,
-            })
-          },
-          fail: err => {
-            
-          }
-        })
-
+        if (!res) {
+          wx.showToast({
+            title: "支付失败",
+            icon: "none"
+          });
+          return;
+        }
+        wx.showToast({
+          title: "模拟支付成功",
+          icon: "none"
+        });
+        setTimeout(() => {
+          wx.redirectTo({
+            url: "/pages/pay-result/pay-result?sts=1&orderNumbers=" + this.data.orderNumbers
+          });
+        }, 1200);
+      },
+      errCallBack: res => {
+        wx.hideLoading();
+        wx.showToast({
+          title: (res && res.msg) || "支付失败",
+          icon: "none"
+        });
       }
     };
     http.request(params);
   },
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
 
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
-})
+  onReady: function() {},
+  onShow: function() {},
+  onHide: function() {},
+  onUnload: function() {},
+  onPullDownRefresh: function() {},
+  onReachBottom: function() {},
+  onShareAppMessage: function() {}
+});
