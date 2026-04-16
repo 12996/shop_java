@@ -153,12 +153,20 @@ const getCaptcha = () => {
     height: 100%;
     padding-top: 10%;
     .top {
+      width: 410px;
       margin-bottom: 30px;
+      margin-left: auto;
+      margin-right: auto;
       text-align: center;
       .logo {
         font-size: 0;
-        max-width: 50%;
+        width: 100%;
         margin: 0 auto;
+        img {
+          display: block;
+          max-width: 100%;
+          margin: 0 auto;
+        }
       }
       &:deep(.company) {
         font-size: 16px;
@@ -170,6 +178,8 @@ const getCaptcha = () => {
       .item-btn {
         width: 410px;
         margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
         input {
           border: 0;
           width: 100%;
