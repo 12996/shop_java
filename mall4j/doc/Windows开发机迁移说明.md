@@ -17,9 +17,6 @@
 - MySQL 使用 `3307`
 - Redis 使用 `6380`
 - 可以运行 `start-local.bat`
-- 可以同时启动：
-  - `yami-shop-admin`
-  - `yami-shop-api`
 - 可以访问：
   - `http://localhost:18085/doc.html`
   - `http://localhost:18086/doc.html`

@@ -38,8 +38,8 @@ yum -y install epel-release
 
 yum -y install python-pip
 ```
- 
- 
+
+
 执行安装命令：
 
 ```bash
