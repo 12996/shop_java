@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2018-2999 广州市蓝海创新科技有限公司 All rights reserved.
  *
- * https://www.mall4j.com/
+ * 
  *
  * 未经允许，不可做商业用途！
  *
@@ -43,6 +43,7 @@ import java.util.List;
 public class AuthFilter implements Filter {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthFilter.class);
+    private static final String DEV_ADMIN_TOKEN_URI = "/dev/auth/admin-token";
 
     @Autowired
     private AuthConfigAdapter authConfigAdapter;
@@ -63,6 +64,12 @@ public class AuthFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
 
         String requestUri = req.getRequestURI();
+        // Allow the local dev token bootstrap endpoint to reach the controller,
+        // which applies the actual dev-profile and localhost-only checks.
+        if (DEV_ADMIN_TOKEN_URI.equals(requestUri)) {
+            chain.doFilter(req, resp);
+            return;
+        }
 
         List<String> excludePathPatterns = authConfigAdapter.excludePathPatterns();
 

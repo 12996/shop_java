@@ -1,4 +1,4 @@
-一个基于vue、element-plus 的轻量级、前后端分离、拥有完整sku和下单流程的完全开源商城后台所属前端界面
+﻿一个基于vue、element-plus 的轻量级、前后端分离、拥有完整sku和下单流程的完全开源商城后台所属前端界面
 
 
 
@@ -10,9 +10,9 @@
 
 ## 授权
 
-Mall4j官网 [https://www.mall4j.com](https://www.mall4j.com)
+Mall4j官网
 
-Mall4j 使用 AGPLv3 开源，请遵守 AGPLv3 的相关条款，或者联系作者获取商业授权([https://www.mall4j.com](https://www.mall4j.com))
+Mall4j 使用 AGPLv3 开源，请遵守 AGPLv3 的相关条款，或者联系作者获取商业授权
 
 ## 项目链接
 
@@ -81,7 +81,7 @@ pnpm run build
 
 
 ## 提交反馈
-- Mall4j商城官网 [https://www.mall4j.com](https://www.mall4j.com)
+- Mall4j商城官网
 
 
 - Mall4j商城官方技术QQ 1群：722835385（3000人群已满）
@@ -89,8 +89,7 @@ pnpm run build
 - Mall4j商城官方技术QQ 3群：630293864
 - 如需购买商城商业版源码，请联系商务微信
 
-![输入图片说明](https://img.mall4j.com/contact.png-v)
+![输入图片说明](https://img.example.com/contact.png-v)
 
 
-## 更多信息请查看Mall4j商城官网 [https://www.mall4j.com](https://www.mall4j.com)
-
+## 更多信息请查看Mall4j商城官网

@@ -1,11 +1,11 @@
-![输入图片说明](https://images.gitee.com/uploads/images/2019/0711/174845_6db7724e_5094767.png "商城.png")
+﻿![输入图片说明](https://images.gitee.com/uploads/images/2019/0711/174845_6db7724e_5094767.png "商城.png")
 Mall4j开源商城，一个基于spring boot、spring oauth2.0、mybatis、redis的轻量级、前后端分离、防范xss攻击、拥有分布式锁，为生产环境多实例完全准备，数据库为b2b2c设计，拥有完整sku和下单流程的开源商城
 
 ## Spring以及VUE官方宣布，SpringBoot2与Vue2已在2023年底停止维护。新项目建议使用SpringBoot3+Vue3的组合，本商城已完成升级!!!
 
 ## 前言
 
-`Mall4j`商城系统致力于为中小企业打造一个完整、易于维护的开源的电商商城系统，采用现阶段流行技术实现。后台管理系统包含商品管理、订单管理、运费模板、规格管理、会员管理、运营管理、内容管理、统计报表、权限管理、设置等模块。开源版本商城属于B2C单商户商城系统，不含营销活动，如需更多模式的商城请查看[Mall4j商城官网](https://www.mall4j.com)。
+`Mall4j`商城系统致力于为中小企业打造一个完整、易于维护的开源的电商商城系统，采用现阶段流行技术实现。后台管理系统包含商品管理、订单管理、运费模板、规格管理、会员管理、运营管理、内容管理、统计报表、权限管理、设置等模块。开源版本商城属于B2C单商户商城系统，不含营销活动。
 
 ## 商城文档
 
@@ -23,9 +23,9 @@ gitee：[https://gitee.com/gz-yami/mall4j/tree/master/doc](https://gitee.com/gz-
 
 除了开源版本，我们商业版有B2C商城、B2B2C商城、O2O商城、S2B2C商城、SAAS商城，多端呈现：小程序 + PC + H5 + APP，更多详情请查看官网 
 
-Mall4j商城官网 [https://www.mall4j.com](https://www.mall4j.com)
+Mall4j商城官网
 
-Mall4j商城开源版 使用 AGPLv3 开源，请遵守 AGPLv3 的相关条款，或者联系作者获取商业授权([https://www.mall4j.com](https://www.mall4j.com))
+Mall4j商城开源版 使用 AGPLv3 开源，请遵守 AGPLv3 的相关条款，或者联系作者获取商业授权
 
 ## 项目链接
 

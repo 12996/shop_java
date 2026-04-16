@@ -1,4 +1,4 @@
-一个基于vue、element ui 的轻量级、前后端分离、拥有完整sku和下单流程的完全开源商城 小程序端
+﻿一个基于vue、element ui 的轻量级、前后端分离、拥有完整sku和下单流程的完全开源商城 小程序端
 
 
 
@@ -9,9 +9,9 @@
 
 ## 授权
 
-Mall4j官网 https://www.mall4j.com
+Mall4j官网 
 
-Mall4j 使用 AGPLv3 开源，请遵守 AGPLv3 的相关条款，或者联系作者获取商业授权(https://www.mall4j.com)
+Mall4j 使用 AGPLv3 开源，请遵守 AGPLv3 的相关条款，或者联系作者获取商业授权()
 
 
 ## 项目链接
@@ -57,6 +57,6 @@ vue中后台：https://gitee.com/gz-yami/mall4v
 
   ![QQ群](https://gitee.com/gz-yami/mall4j/raw/master/screenshot/qqGroup.png)
 
-- 论坛：<http://bbs.mall4j.com>
+- 论坛：<http://bbs.>
 
 - 商务邮箱：yamitech@163.com

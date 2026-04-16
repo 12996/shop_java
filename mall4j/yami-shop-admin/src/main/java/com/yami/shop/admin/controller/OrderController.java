@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2018-2999 广州市蓝海创新科技有限公司 All rights reserved.
  *
- * https://www.mall4j.com/
+ * 
  *
  * 未经允许，不可做商业用途！
  *
@@ -29,6 +29,7 @@ import com.yami.shop.common.response.ServerResponseEntity;
 import com.yami.shop.common.util.PageParam;
 import com.yami.shop.security.admin.util.SecurityUtils;
 import com.yami.shop.service.*;
+import com.yami.shop.common.annotation.SysLog;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -101,6 +102,29 @@ public class OrderController {
     /**
      * 发货
      */
+    /**
+     * 删除订单
+     */
+    @DeleteMapping("/{orderNumber}")
+    @SysLog("删除订单")
+    @PreAuthorize("@pms.hasPermission('order:order:delete')")
+    public ServerResponseEntity<Void> delete(@PathVariable("orderNumber") String orderNumber) {
+        Long shopId = SecurityUtils.getSysUser().getShopId();
+        Order order = orderService.getOrderByOrderNumber(orderNumber);
+        if (order == null) {
+            throw new YamiShopBindException("该订单不存在");
+        }
+        if (!Objects.equal(shopId, order.getShopId())) {
+            throw new YamiShopBindException("您没有权限删除该订单");
+        }
+        if (!Objects.equal(order.getStatus(), OrderStatus.SUCCESS.value())
+                && !Objects.equal(order.getStatus(), OrderStatus.CLOSE.value())) {
+            throw new YamiShopBindException("订单未完成或未关闭，无法删除订单");
+        }
+        orderService.deleteOrders(Arrays.asList(order));
+        return ServerResponseEntity.success();
+    }
+
     @PutMapping("/delivery")
     @PreAuthorize("@pms.hasPermission('order:order:delivery')")
     public ServerResponseEntity<Void> delivery(@RequestBody DeliveryOrderParam deliveryOrderParam) {

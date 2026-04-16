@@ -1,4 +1,4 @@
-![输入图片说明](https://images.gitee.com/uploads/images/2019/0711/174845_6db7724e_5094767.png "在这里输入图片标题")
+﻿![输入图片说明](https://images.gitee.com/uploads/images/2019/0711/174845_6db7724e_5094767.png "在这里输入图片标题")
 
 
 一个基于springboot的开源商城 uniapp端
@@ -82,7 +82,7 @@ uniapp端：https://gitee.com/gz-yami/mall4uni
 
 
 ## 提交反馈
-- Mall4j商城官网 https://www.mall4j.com
+- Mall4j商城官网 
 
 
 - Mall4j商城官方技术QQ 1群：722835385（3000人群已满）
@@ -96,4 +96,4 @@ uniapp端：https://gitee.com/gz-yami/mall4uni
 ## mall4cloud微服务商城版本已上线
 https://gitee.com/gz-yami/mall4cloud
 
-## 更多信息请查看Mall4j商城官网 <https://www.mall4j.com>
+## 更多信息请查看Mall4j商城官网 <>

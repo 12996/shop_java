@@ -190,6 +190,13 @@
                     >
                       查看
                     </el-button>
+                    <el-button
+                      v-if="isAuth('order:order:delete') && canDelete(order)"
+                      type="text"
+                      @click="onDelete(order.orderNumber)"
+                    >
+                      删除
+                    </el-button>
                   </div>
                 </div>
               </el-col>
@@ -236,6 +243,7 @@
 <script setup>
 import AddOrUpdate from './components/order-info.vue'
 import ConsignmentInfo from './components/consignment-info.vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { isAuth } from '@/utils'
 const resourcesUrl = import.meta.env.VITE_APP_RESOURCES_URL
 const dataForm = ref({})
@@ -338,6 +346,35 @@ const onAddOrUpdate = (val) => {
   nextTick(() => {
     addOrUpdateRef.value?.init(val)
   })
+}
+
+const canDelete = (order) => {
+  return order.status === 5 || order.status === 6
+}
+
+const onDelete = (orderNumber) => {
+  ElMessageBox.confirm('确定进行[删除订单]操作?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(() => {
+      http({
+        url: http.adornUrl(`/order/order/${orderNumber}`),
+        method: 'delete'
+      })
+        .then(() => {
+          ElMessage({
+            message: '操作成功',
+            type: 'success',
+            duration: 1500,
+            onClose: () => {
+              getDataList(page)
+            }
+          })
+        })
+    })
+    .catch(() => { })
 }
 
 const consignmentInfoRef = ref(null)

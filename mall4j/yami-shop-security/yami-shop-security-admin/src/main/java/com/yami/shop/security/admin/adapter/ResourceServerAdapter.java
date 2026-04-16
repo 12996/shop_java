@@ -21,7 +21,8 @@ public class ResourceServerAdapter extends DefaultAuthConfigAdapter {
             "/swagger-resources/**",
             "/captcha/**",
             "/adminLogin",
-            "/mall4j/img/**");
+            "/dev/auth/admin-token",
+            "/online-shop/img/**");
 
     @Override
     public List<String> excludePathPatterns() {

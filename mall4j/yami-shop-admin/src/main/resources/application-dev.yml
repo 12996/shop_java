@@ -20,6 +20,9 @@ spring:
       database: ${REDIS_DATABASE:0}
 logging:
   config: classpath:logback/logback-dev.xml
+app:
+  dev-auth:
+    enabled: true
 xxl-job:
   accessToken: default_token
   logPath: /data/applogs/xxl-job/jobhandler

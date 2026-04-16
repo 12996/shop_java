@@ -234,6 +234,7 @@
         (
         SELECT * FROM tz_order
         <where>
+            and delete_status = 0
             <if test="orderParam.orderNumber != null and orderParam.orderNumber != ''">
                 and order_number = #{orderParam.orderNumber}
             </if>
@@ -266,6 +267,7 @@
     <select id="countOrderDetail" resultType="long">
         SELECT COUNT(0) FROM tz_order
         <where>
+            and delete_status = 0
             <if test="orderParam.orderNumber != null and orderParam.orderNumber != ''">
                 and order_number = #{orderParam.orderNumber}
             </if>

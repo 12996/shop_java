@@ -17,6 +17,6 @@ public class ResourceConfigAdapter implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/mall4j/img/**").addResourceLocations("file:" + imgUploadUtil.getUploadPath());
+        registry.addResourceHandler("/online-shop/img/**").addResourceLocations("file:" + imgUploadUtil.getUploadPath());
     }
 }
